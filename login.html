@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In · OSMS (Online Student Management System)</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      background:
+        radial-gradient(800px 400px at 80% 10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 70%),
+        radial-gradient(600px 350px at 10% 90%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 70%),
+        var(--bg);
+    }
+    .auth-card {
+      width: min(460px, 100%);
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-xl);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .auth-brand .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+    .persona-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--r);
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all var(--t-fast);
+      text-align: left;
+    }
+    .persona-card:hover {
+      background: var(--surface-hover);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .auth-footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-3);
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <div style="position: absolute; top: 20px; right: 24px; display: flex; gap: 8px;">
+    <button class="icon-btn" id="theme-btn" aria-label="Toggle theme"></button>
+  </div>
+
+  <main class="auth-card">
+    <div class="auth-brand">
+      <div class="brand-mark" id="logo-icon"></div>
+      <div>
+        <h1 style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">OSMS Portal</h1>
+        <small class="subtle" style="font-size: 12.5px;">Online Student Management System · IEEE 830</small>
+      </div>
+    </div>
+
+    <div id="auth-alert"></div>
+
+    <form id="login-form" class="stack" novalidate style="gap: 16px;">
+      <div class="field">
+        <label for="login-id">Institutional Email / Roll No / ID</label>
+        <div class="input-group">
+          <span id="ic-user"></span>
+          <input class="input" id="login-id" type="text" placeholder="e.g. cherish.y@osms.edu or 24881A1264" autocomplete="username" data-rule="required">
+        </div>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <div class="row-between">
+          <label for="login-pass">Password</label>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-forgot-pass" style="padding: 0; min-height: auto; font-size: 12.5px; color: var(--primary);">Forgot password?</button>
+        </div>
+        <div class="input-group">
+          <span id="ic-lock"></span>
+          <input class="input" id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password" data-rule="required" style="padding-right: 44px;">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-pass" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; padding: 0;" aria-label="Toggle password visibility"></button>
+        </div>
+        <span class="field-error"></span>
+      </div>
+
+      <button class="btn btn-primary btn-lg btn-block" type="submit" id="btn-submit" style="margin-top: 8px;">
+        <span id="ic-login"></span> Sign In to Dashboard
+      </button>
+    </form>
+
+    <div class="divider" style="margin: 24px 0 16px;"></div>
+
+    <div>
+      <div class="row-between" style="margin-bottom: 10px;">
+        <span class="subtle" style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em;">Quick Demo One-Click Login</span>
+        <span class="badge badge-primary" style="font-size: 11px;">RBAC Demo</span>
+      </div>
+      <div class="stack" style="gap: 8px;">
+        <button type="button" class="persona-card" data-login="cherish.y@osms.edu" data-role="student">
+          <span class="avatar" style="width: 32px; height: 32px; font-size: 12px;">CY</span>
+          <div class="grow" style="min-width: 0;">
+            <strong style="font-size: 13.5px; display: block;">Cherish Yepuru</strong>
+            <small class="subtle mono" style="font-size: 11.5px;">Student · Roll: 24881A1264 · IT-A</small>
+          </div>
+          <span class="badge badge-success">Student</span>
+        </button>
+
+        <button type="button" class="persona-card" data-login="ravi.kumar@osms.edu" data-role="faculty">
+          <span class="avatar amber" style="width: 32px; height: 32px; font-size: 12px;">RK</span>
+          <div class="grow" style="min-width: 0;">
+            <strong style="font-size: 13.5px; display: block;">Dr. Ravi Kumar</strong>
+            <small class="subtle mono" style="font-size: 11.5px;">Faculty · ID: F101 · Professor & HOD</small>
+          </div>
+          <span class="badge badge-warning">Faculty</span>
+        </button>
+
+        <button type="button" class="persona-card" data-login="admin@osms.edu" data-role="admin">
+          <span class="avatar violet" style="width: 32px; height: 32px; font-size: 12px;">PS</span>
+          <div class="grow" style="min-width: 0;">
+            <strong style="font-size: 13.5px; display: block;">Priya Sharma</strong>
+            <small class="subtle mono" style="font-size: 11.5px;">System Administrator · ADM01</small>
+          </div>
+          <span class="badge badge-violet">Admin</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="auth-footer">
+    <p>Department of Information Technology · Software Engineering Project (A8520)</p>
+    <p class="mono" style="margin-top: 4px; font-size: 11.5px;">Batch 6 · Cherish Yepuru, Pavani Rangineni, Varun Sandesh</p>
+  </footer>
+
+  <div class="toast-stack" aria-live="polite"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    (function() {
+      const { $, $$, esc, Theme, toast, modal, validate } = UI;
+      const O = OSMS;
+
+      // Render static icons
+      $('#logo-icon').innerHTML = icon('cap', 'icon-lg');
+      $('#ic-user').outerHTML = icon('user', 'icon');
+      $('#ic-lock').outerHTML = icon('lock', 'icon');
+      $('#ic-login').outerHTML = icon('arrowRight', 'icon');
+      $('#btn-toggle-pass').innerHTML = icon('eye', 'icon-sm');
+
+      const updateThemeBtn = () => {
+        $('#theme-btn').innerHTML = icon(Theme.current() === 'dark' ? 'sun' : 'moon');
+      };
+      updateThemeBtn();
+      $('#theme-btn').onclick = () => {
+        Theme.toggle();
+        updateThemeBtn();
+      };
+
+      // Check query params for alerts
+      const params = new URLSearchParams(location.search);
+      if (params.get('expired')) {
+        $('#auth-alert').innerHTML = '<div class="banner banner-warn" style="margin-bottom:16px;">' + icon('clock') + '<p>Your session timed out due to inactivity. Please sign in again.</p></div>';
+      } else if (params.get('signedout')) {
+        $('#auth-alert').innerHTML = '<div class="banner banner-info" style="margin-bottom:16px;">' + icon('checkCircle') + '<p>You have been safely signed out.</p></div>';
+      }
+
+      // Password visibility toggle
+      let showPass = false;
+      $('#btn-toggle-pass').onclick = () => {
+        showPass = !showPass;
+        $('#login-pass').type = showPass ? 'text' : 'password';
+      };
+
+      // One-click demo personas
+      $$('.persona-card').forEach(btn => {
+        btn.onclick = () => {
+          $('#login-id').value = btn.dataset.login;
+          $('#login-pass').value = 'Demo@123';
+          performLogin();
+        };
+      });
+
+      // Submit login
+      $('#login-form').onsubmit = (e) => {
+        e.preventDefault();
+        performLogin();
+      };
+
+      function performLogin() {
+        if (!validate($('#login-form'))) return;
+
+        const loginInput = $('#login-id').value.trim();
+        const passInput = $('#login-pass').value;
+        const btn = $('#btn-submit');
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Verifying credentials…';
+
+        setTimeout(() => {
+          const user = O.findUser(loginInput);
+          if (!user || user.password !== passInput) {
+            btn.disabled = false;
+            btn.innerHTML = icon('arrowRight', 'icon') + ' Sign In to Dashboard';
+            toast('Authentication Failed', 'Invalid email / ID or password. Check demo credentials.', 'error');
+            const pf = $('#login-pass').closest('.field');
+            pf.classList.add('invalid');
+            pf.querySelector('.field-error').textContent = 'Invalid credentials';
+            return;
+          }
+
+          // Check if profile is active (FR-2.1)
+          const prof = O.profileOf(user);
+          if (prof && prof.active === false) {
+            btn.disabled = false;
+            btn.innerHTML = icon('arrowRight', 'icon') + ' Sign In to Dashboard';
+            toast('Account Deactivated', 'Your account has been deactivated by the Administrator (FR-2.1).', 'error');
+            return;
+          }
+
+          // Store session (FR-1.1, FR-1.2)
+          localStorage.removeItem('osms_logged_out');
+          localStorage.setItem('osms_session', JSON.stringify({
+            ref: user.ref,
+            role: user.role,
+            at: Date.now()
+          }));
+          O.log('Signed in', user.ref);
+
+          toast('Welcome Back', 'Signed in as ' + esc(prof.name) + ' (' + user.role + ')');
+          setTimeout(() => {
+            location.href = 'index.html#/dashboard';
+          }, 300);
+        }, 500);
+      }
+
+      // Forgot Password Modal (FR-1.3)
+      $('#btn-forgot-pass').onclick = () => {
+        const m = modal({
+          title: 'Reset Forgotten Password',
+          body: '<div class="stack" id="fp-step-1">' +
+            '<p class="muted" style="font-size:13.5px;">Enter your registered institutional email to receive a password reset verification link (FR-1.3).</p>' +
+            UI.field({ id: 'fp-email', label: 'Institutional Email', placeholder: 'e.g. cherish.y@osms.edu', rule: 'required|email', value: $('#login-id').value.includes('@') ? $('#login-id').value : '' }) +
+          '</div>' +
+          '<div class="stack" id="fp-step-2" hidden>' +
+            '<div class="banner banner-info">' + icon('mail') + '<p>A verification code was sent to your email. Enter it below with your new password.</p></div>' +
+            UI.field({ id: 'fp-code', label: '6-digit Verification Code', value: '482910', rule: 'required' }) +
+            UI.field({ id: 'fp-new-pass', label: 'New Password', type: 'password', rule: 'required|strong', hint: 'At least 8 characters with uppercase, number and symbol.' }) +
+          '</div>',
+          foot: '<button class="btn" data-close>Cancel</button><button class="btn btn-primary" id="btn-fp-next">Send Verification Code</button>'
+        });
+
+        let step = 1;
+        m.$('#btn-fp-next').onclick = () => {
+          if (step === 1) {
+            const emailInp = m.$('#fp-email');
+            if (!validate(m.$('#fp-step-1'))) return;
+            const targetUser = O.db.users.find(u => u.email.toLowerCase() === emailInp.value.trim().toLowerCase());
+            if (!targetUser) {
+              toast('Email Not Found', 'No registered account found with that email address.', 'error');
+              return;
+            }
+            m.$('#fp-step-1').hidden = true;
+            m.$('#fp-step-2').hidden = false;
+            m.$('#btn-fp-next').innerHTML = icon('check') + ' Reset Password';
+            step = 2;
+            toast('Code Sent', 'Simulated verification code: 482910 sent to ' + emailInp.value, 'info');
+          } else {
+            if (!validate(m.$('#fp-step-2'))) return;
+            const targetUser = O.db.users.find(u => u.email.toLowerCase() === m.$('#fp-email').value.trim().toLowerCase());
+            if (targetUser) {
+              targetUser.password = m.$('#fp-new-pass').value;
+              O.save();
+              O.log('Reset password via verification code', targetUser.ref);
+              toast('Password Reset', 'Your password has been updated. You may now sign in.');
+              m.close();
+              $('#login-id').value = targetUser.email;
+              $('#login-pass').value = targetUser.password;
+            }
+          }
+        };
+      };
+    })();
+  </script>
+</body>
+</html>
